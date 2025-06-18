@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
+from datetime import datetime
 
 class ProductBase(BaseModel):
     """
@@ -36,6 +37,7 @@ class ProductRead(ProductBase):
     Inclut l'ID unique du produit en plus des champs de base.
     """
     id: int  # Identifiant unique du produit
+    created_at: datetime
 
     class Config:
         orm_mode = True  # Permet la conversion ORM → Pydantic directement

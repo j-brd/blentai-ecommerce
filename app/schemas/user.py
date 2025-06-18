@@ -1,5 +1,6 @@
 from pydantic import BaseModel, EmailStr
 from typing import Literal
+from datetime import datetime
 
 class UserCreate(BaseModel):
     """
@@ -22,6 +23,7 @@ class UserRead(BaseModel):
     email: EmailStr
     full_name: str | None
     role: Literal["client", "admin"]
+    created_at: datetime
 
     class Config:
         orm_mode = True

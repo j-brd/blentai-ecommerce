@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Float
+from sqlalchemy import Column, Integer, String, Float, DateTime
+from datetime import datetime, timezone
 from app.core.database import Base
 
 class Product(Base):
@@ -13,3 +14,4 @@ class Product(Base):
     category = Column(String, nullable=False)
     price = Column(Float, nullable=False)
     stock_quantity = Column(Integer, nullable=False, default=0)
+    created_at = Column(DateTime(timezone=True), default=datetime.now(timezone.utc), nullable=False)
