@@ -24,7 +24,7 @@ cd your_project
 4 initialise la base : 
 - python -m scripts.init_db
 
-4 Lance le serveur : 
+5 Lance le serveur : 
 - python -m uvicorn app.main:app --reload --port 10000
 
 ## Endpoints principaux
