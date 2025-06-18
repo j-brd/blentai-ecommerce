@@ -1,5 +1,5 @@
 from app.core.database import Base, engine
-from app.models import user
+from app.models import user, product
 
 def init_db():
     """

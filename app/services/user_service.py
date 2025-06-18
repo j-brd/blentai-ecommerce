@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.user import User
-from app.core.security import pwd_context, create_jwt_token
+from app.core.security import pwd_context
 from app.schemas.user import UserCreate
 from app.core.config import settings
 
@@ -31,9 +31,3 @@ def authenticate_user(db: Session, email: str, password: str):
     if not user or not pwd_context.verify(password, user.hashed_password):
         return None
     return user
-
-def create_access_token(data: dict):
-    """
-    Génère un JWT signé contenant les données fournies + une date d'expiration.
-    """
-    return create_jwt_token(data, settings)

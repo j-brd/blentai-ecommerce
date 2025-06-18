@@ -2,10 +2,12 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
 from app import schemas
-from app.services import user_service
+from app.services import user_service, auth_service
 from app.core.database import get_db
+from app.core.security import create_jwt_token
+from app.schemas.user import UserRead
 
-router = APIRouter(prefix="/api/auth", tags=["auth"])
+router = APIRouter(prefix="/api/auth", tags=["Auth"])
 
 @router.post("/register", status_code=status.HTTP_201_CREATED, response_model=schemas.user.UserRead)
 def register(user: schemas.user.UserCreate, db: Session = Depends(get_db)):
@@ -39,5 +41,12 @@ def login(credentials: schemas.user.UserLogin, db: Session = Depends(get_db)):
     user = user_service.authenticate_user(db, credentials.email, credentials.password)
     if not user:
         raise HTTPException(status_code=401, detail="Identifiants invalides")
-    token = user_service.create_access_token({"sub": user.email, "role": user.role})
+    token = create_jwt_token({"sub": user.email, "role": user.role})
     return {"access_token": token}
+
+@router.get("/me", response_model=UserRead)
+def read_me(user = Depends(auth_service.get_current_user)):
+    """
+    Retourne les informations du token de l'utilisateur connecté.
+    """
+    return user
