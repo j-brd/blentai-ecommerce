@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Literal, Optional
 from datetime import datetime
+from app.models.order import OrderStatus
 
 class OrderLineCreate(BaseModel):
     """
@@ -34,15 +35,16 @@ class OrderRead(BaseModel):
     """
     id: int
     delivery_address: str
-    status: Literal["en_attente", "validée", "expédiée", "annulée"]
+    status: OrderStatus
     lines: List[OrderLineRead]
     created_at: datetime
 
     class Config:
         orm_mode = True
+        use_enum_values = True
 
 class OrderUpdateStatus(BaseModel):
     """
     Données nécessaires pour mettre à jour le statut d'une commande.
     """
-    status: Literal["en_attente", "validée", "expédiée", "annulée"]
+    status: OrderStatus
